@@ -11,6 +11,7 @@ import com.itheima.health.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Service(interfaceClass = PermissionService.class)
@@ -55,5 +56,10 @@ public class PermissionServiceImpl implements PermissionService {
         } else {
             permissionDao.deleteById(id);
         }
+    }
+
+    @Override
+    public List<Permission> findAll() {
+        return permissionDao.findAll();
     }
 }

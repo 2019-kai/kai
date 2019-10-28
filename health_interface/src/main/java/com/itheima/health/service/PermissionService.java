@@ -5,6 +5,7 @@ import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.pojo.Permission;
 
+import java.util.List;
 import java.util.Set;
 
 public interface PermissionService {
@@ -20,4 +21,6 @@ public interface PermissionService {
     void edit(Permission permission);
 
     void delete(Integer id);
+
+    List<Permission> findAll();
 }

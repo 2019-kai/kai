@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
 import java.util.Set;
 
 public interface PermissionDao {
@@ -27,4 +28,7 @@ public interface PermissionDao {
 
     @Select("select count(*) from t_role_permission where permission_id=#{permissionId}")
     Long findRoleAndPermissionByPermissionId(Integer id);
+
+    @Select("select * from t_permission")
+    List<Permission> findAll();
 }

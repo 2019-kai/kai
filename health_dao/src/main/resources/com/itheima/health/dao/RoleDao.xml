@@ -7,13 +7,47 @@
     <select id="findRoleByUserId" parameterType="int" resultType="role">
         SELECT r.* FROM t_role r, t_user_role ur WHERE r.id=ur.role_id AND ur.user_id=#{userId}
     </select>
-    
+
     <!--<resultMap id="roleMap" type="role" >
         <id property="id" column="id"/>
-        
+
         <collection property="permissions" column="id"  select="com.itheima.health.dao.PermissionDao.findPermissionByRoleId"/>
 
         <collection property="menus" column="id"  select="com.itheima.health.dao.MenuDao.findMenuByRoleId"/>
     </resultMap>-->
+
+    <select id="findPage" parameterType="string" resultType="role">
+        select * from t_role
+        <where>
+            <if test="value != null and value.length > 0">
+                name=#{value}
+            </if>
+        </where>
+    </select>
+
+    <insert id="add" parameterType="role">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            select last_insert_id();
+        </selectKey>
+        insert into t_role (name, keyword, description ) values (#{name}, #{keyword}, #{description})
+    </insert>
+
+    <update id="edit" parameterType="role">
+        update t_role
+        <set>
+            <if test="name !=null and name.length > 0">
+                name=#{name},
+            </if>
+
+            <if test="keyword !=null and keyword.length > 0">
+                keyword=#{keyword},
+            </if>
+
+            <if test="description !=null and description.length > 0">
+                description=#{description},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
 
 </mapper>
