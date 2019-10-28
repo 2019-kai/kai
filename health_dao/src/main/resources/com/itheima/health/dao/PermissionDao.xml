@@ -8,4 +8,31 @@
         SELECT p.* FROM t_permission p, t_role_permission rp WHERE p.id=rp.permission_id AND rp.role_id=#{roleId}
     </select>
 
+    <select id="findPage" parameterType="string" resultType="permission">
+        select * from t_permission
+        <where>
+            <if test="value !=null and value.length > 0">
+                name=#{value}
+            </if>
+        </where>
+    </select>
+
+    <update id="edit" parameterType="permission">
+        update t_permission
+        <set>
+            <if test="name != null and name.length > 0">
+                name=#{name},
+            </if>
+
+            <if test="keyword != null and keyword.length > 0">
+                keyword=#{keyword},
+            </if>
+
+            <if test="description != null and description.length > 0">
+                description=#{description},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
 </mapper>

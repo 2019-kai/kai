@@ -8,11 +8,14 @@ import com.itheima.health.dao.CheckItemDao;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.pojo.CheckItem;
+import com.itheima.health.pojo.Setmeal;
 import com.itheima.health.service.CheckItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service(interfaceClass = CheckItemService.class)
 @Transactional
@@ -20,6 +23,9 @@ public class CheckItemServiceImpl implements CheckItemService {
 
     @Autowired
     private CheckItemDao checkItemDao;
+
+    @Autowired
+    private RedisTemplate<String, Setmeal> redisTemplate;
 
     @Override
     public void add(CheckItem checkItem) {
@@ -40,6 +46,11 @@ public class CheckItemServiceImpl implements CheckItemService {
 
     @Override
     public void edit(CheckItem checkItem) {
+        Long count = checkItemDao.findCheckGroupCheckItemByCheckItemId(checkItem.getId());
+        if (count > 0) {
+            Set<String> keys = redisTemplate.keys("SETMEAL*");
+            redisTemplate.delete(keys);
+        }
         checkItemDao.edit(checkItem);
     }
 

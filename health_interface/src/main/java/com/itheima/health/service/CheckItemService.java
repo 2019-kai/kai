@@ -7,6 +7,7 @@ import com.itheima.health.pojo.CheckItem;
 import java.util.List;
 
 public interface CheckItemService {
+
     void add(CheckItem checkItem);
 
     PageResult findPage(QueryPageBean queryPageBean);

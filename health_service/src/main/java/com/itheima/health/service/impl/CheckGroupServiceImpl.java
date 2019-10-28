@@ -7,11 +7,14 @@ import com.itheima.health.dao.CheckGroupDao;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
 import com.itheima.health.pojo.CheckGroup;
+import com.itheima.health.pojo.Setmeal;
 import com.itheima.health.service.CheckGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service(interfaceClass = CheckGroupService.class)
 @Transactional
@@ -19,6 +22,9 @@ public class CheckGroupServiceImpl implements CheckGroupService {
 
     @Autowired
     private CheckGroupDao checkGroupDao;
+
+    @Autowired
+    private RedisTemplate<String, Setmeal> redisTemplate;
 
     @Override
     public PageResult findPage(QueryPageBean queryPageBean) {
@@ -47,6 +53,11 @@ public class CheckGroupServiceImpl implements CheckGroupService {
     public void edit(CheckGroup checkGroup, Integer[] checkitemIds) {
         checkGroupDao.edit(checkGroup);
 
+        Long count = checkGroupDao.findSetmealCheckGroupByCheckGroupId(checkGroup.getId());
+        if (count > 0) {
+            Set<String> keys = redisTemplate.keys("SETMEAL*");
+            redisTemplate.delete(keys);
+        }
         checkGroupDao.deleteCheckGroupAndCheckItemByCheckGroupId(checkGroup.getId());
 
         addCheckGroupAndCheckItem(checkGroup.getId(), checkitemIds);
