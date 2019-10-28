@@ -11,8 +11,6 @@ import com.itheima.health.pojo.Setmeal;
 import com.itheima.health.service.SetmealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.JedisPool;
 

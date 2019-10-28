@@ -6,7 +6,6 @@ import com.github.pagehelper.PageHelper;
 import com.itheima.health.dao.PermissionDao;
 import com.itheima.health.entity.PageResult;
 import com.itheima.health.entity.QueryPageBean;
-import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.pojo.Permission;
 import com.itheima.health.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;

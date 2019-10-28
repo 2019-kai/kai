@@ -1,7 +1,6 @@
 package com.itheima.health.dao;
 
 import com.github.pagehelper.Page;
-import com.itheima.health.pojo.CheckItem;
 import com.itheima.health.pojo.Permission;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
