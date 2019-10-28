@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <security:http security="none" pattern="/login.html"/>
+
+    <security:global-method-security pre-post-annotations="enabled"/>
+
+    <security:http auto-config="true" use-expressions="true">
+
+        <security:headers>
+            <!--设置在页面可以通过iframe访问受保护的页面，默认为不允许访问-->
+            <security:frame-options policy="SAMEORIGIN"/>
+        </security:headers>
+
+        <security:form-login login-processing-url="/login.do"
+                             login-page="/login.html"
+                             default-target-url="/pages/main.html"
+                             authentication-failure-url="/login.html"/>
+        <security:intercept-url pattern="/pages/**" access="isAuthenticated()"/>
+
+        <security:logout logout-success-url="/login.html" logout-url="/logout.do" invalidate-session="true"/>
+
+        <security:csrf disabled="true"/>
+    </security:http>
+
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="springSecurityUserService">
+            <security:password-encoder ref="bCryptPasswordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+</beans>

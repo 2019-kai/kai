@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.health.dao.MemberDao">
+
+    <insert id="add" parameterType="member">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            select last_insert_id()
+        </selectKey>
+        insert into t_member (name, sex, idCard, phoneNumber, regTime) values (#{name},#{sex},#{idCard},#{phoneNumber},#{regTime})
+    </insert>
+</mapper>

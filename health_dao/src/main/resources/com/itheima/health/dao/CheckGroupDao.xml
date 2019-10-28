@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.health.dao.CheckGroupDao">
+    <!--通过查询条件查询分页的数据-->
+    <select id="findPage" parameterType="string" resultType="checkGroup">
+        select * from t_checkgroup
+        <where>
+            <if test="value != null and value.length > 0">
+                code=#{value} or name like concat('%', #{value}, '%') or helpCode=#{value}
+            </if>
+        </where>
+    </select>
+
+    <!--保存检查组数据-->
+    <insert id="add" parameterType="checkGroup">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            select last_insert_id();
+        </selectKey>
+        insert into t_checkgroup (code, name, helpCode, sex, remark, attention ) values (#{code}, #{name}, #{helpCode}, #{sex}, #{remark}, #{attention})
+    </insert>
+
+    <!--更新检查组中的数据-->
+    <update id="edit" parameterType="checkGroup">
+        update t_checkgroup
+        <set>
+            <if test="code != null and code.length > 0">
+                code=#{code},
+            </if>
+
+            <if test="name !=null and name.length > 0">
+                name=#{name},
+            </if>
+
+            <if test="helpCode !=null and helpCode.length > 0">
+                helpCode=#{helpCode},
+            </if>
+
+            <if test="sex !=null and sex.length > 0">
+                sex=#{sex},
+            </if>
+
+            <if test="remark !=null and remark.length > 0">
+                remark=#{remark},
+            </if>
+
+            <if test="attention !=null and attention.length > 0">
+                attention=#{attention},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--通过套餐id关联查询检测项-->
+    <select id="findCheckGroupBySetmealId" parameterType="int" resultMap="checkGroupMap">
+        SELECT * FROM t_checkgroup cg, t_setmeal_checkgroup scg WHERE cg.id = scg.checkgroup_id AND scg.setmeal_id=#{setmealId}
+    </select>
+    
+    <resultMap id="checkGroupMap" type="checkGroup" autoMapping="true">
+        <id property="id" column="id"/>
+        
+        <collection property="checkItems"
+                    column="id"
+                    select="com.itheima.health.dao.CheckItemDao.findCheckItemByCheckGroupId"/>
+    </resultMap>
+
+</mapper>

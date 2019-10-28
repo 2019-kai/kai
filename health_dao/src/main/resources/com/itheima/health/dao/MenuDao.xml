@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.health.dao.MenuDao">
+
+    <select id="findMenuByRoleId" parameterType="int" resultType="menu">
+        SELECT m.* FROM t_menu m, t_role_menu rm WHERE m.id=rm.menu_id AND m.parentMenuId IS NULL AND rm.role_id=#{roleId} ORDER BY priority
+    </select>
+    
+    <!--<resultMap id="menuMap" type="menu" autoMapping="true">
+        <id property="id" column="id"/>
+        
+        <collection property="children" column="id" select="com.itheima.health.dao.MenuDao.findChildrenByPriority"/>
+    </resultMap>-->
+
+    <select id="findChildrenByPriority" parameterType="int" resultType="menu">
+        SELECT * FROM t_menu WHERE parentMenuId = #{id} ORDER BY priority
+    </select>
+
+</mapper>
