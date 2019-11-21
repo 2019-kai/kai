@@ -79,13 +79,13 @@ public class SetmealServiceImpl implements SetmealService {
             if (oldSetmeal.getImg() == null) {
                 //将修改之后的套餐图片保存到redis的setmealPicDbResources中
                 jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_DB_RESOURCES, setmeal.getImg());
-            }
-            if (!oldSetmeal.getImg().equals(setmeal.getImg())) {
-                //删除redis的setmealPicDbResources中修改套餐修改之前的图片
-                jedisPool.getResource().srem(RedisConstant.SETMEAL_PIC_DB_RESOURCES, oldSetmeal.getImg());
+            } else if (!oldSetmeal.getImg().equals(setmeal.getImg())){
 
-                //将修改之后的套餐图片保存到redis的setmealPicDbResources中
-                jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_DB_RESOURCES, setmeal.getImg());
+                    //删除redis的setmealPicDbResources中修改套餐修改之前的图片
+                    jedisPool.getResource().srem(RedisConstant.SETMEAL_PIC_DB_RESOURCES, oldSetmeal.getImg());
+
+                    //将修改之后的套餐图片保存到redis的setmealPicDbResources中
+                    jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_DB_RESOURCES, setmeal.getImg());
             }
         }
 
